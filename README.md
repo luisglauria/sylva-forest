@@ -7,13 +7,95 @@ musgo, troncos caídos e feixes de luz.
 Feita com **Three.js 0.180** dentro de um app **OpenAI Sites** (vinext + Vite + React 19,
 deploy em Cloudflare Workers).
 
-## Rodando localmente
+## Rodando no seu PC
+
+### Pré-requisitos
+
+- **Node.js 22.13 ou superior** (traz o `npm` junto)
+- **Git**
+- Um navegador com WebGL 2 (Chrome, Firefox, Safari ou Edge recentes)
+- GPU dedicada recomendada — a cena tem centenas de milhares de instâncias
+
+Confira o que já tem instalado:
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run build    # build de produção (vinext build)
+node -v   # precisa ser >= 22.13
+git --version
 ```
+
+### 1. Instalar o Node (se precisar)
+
+**macOS**
+
+```bash
+# com Homebrew (https://brew.sh)
+brew install node
+
+# ou com nvm (permite várias versões)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+nvm install 22
+```
+
+**Linux**
+
+```bash
+# com nvm (recomendado, não precisa de sudo)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+nvm install 22
+
+# ou pelo repositório NodeSource (Debian/Ubuntu)
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Fedora
+sudo dnf install nodejs
+```
+
+**Windows**
+
+```powershell
+# com winget (Windows 10/11)
+winget install OpenJS.NodeJS.LTS
+
+# ou com nvm-windows: https://github.com/coreybutler/nvm-windows/releases
+nvm install 22
+nvm use 22
+```
+
+Também dá para baixar o instalador direto em <https://nodejs.org>.
+
+### 2. Clonar e rodar
+
+Os comandos abaixo são iguais nos três sistemas. No Windows use **PowerShell** ou o
+**Git Bash**; no macOS/Linux, o terminal padrão.
+
+```bash
+git clone https://github.com/luisglauria/sylva-forest.git
+cd sylva-forest
+
+npm install        # instala as dependências (~1–2 min na primeira vez)
+npm run dev        # sobe o servidor de desenvolvimento
+```
+
+Abra <http://localhost:3000> no navegador. O `npm run dev` recarrega sozinho quando você
+edita os arquivos.
+
+### 3. Build de produção (opcional)
+
+```bash
+npm run build      # gera o bundle em dist/ (vinext build)
+npm run start      # serve o build localmente via Wrangler
+```
+
+### Problemas comuns
+
+- **`node: command not found`** depois de instalar via nvm — feche e reabra o terminal,
+  ou rode `nvm use 22`.
+- **Tela preta / "não foi possível iniciar a floresta"** — o navegador não tem WebGL 2
+  ativo ou está usando GPU integrada sem aceleração. Teste em outro navegador.
+- **Windows: erro de `execution policy` ao rodar scripts** — abra o PowerShell e rode
+  `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
+- **Porta 3000 ocupada** — rode `npm run dev -- -p 4000` e acesse a porta nova.
 
 ## Controles
 
