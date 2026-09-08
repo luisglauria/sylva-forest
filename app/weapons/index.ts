@@ -110,21 +110,31 @@ export function createArsenal(forest, opts = {}) {
   }
 
   // --- engage / disengage ---
-  // Pointer lock is the real path; if it is refused (e.g. the page is framed)
-  // we fall back to a "soft lock": look still tracks mouse movement, the cursor
-  // just stays visible and ESC leaves.
+  // Pointer lock is the real path (cursor hidden, unbounded mouse); if it is
+  // refused (e.g. the page is framed) we fall back to a "soft lock": look still
+  // tracks mouse movement and we hide the cursor via the `armed` body class,
+  // though the OS pointer can still reach the screen edges. ESC leaves.
   function setEngaged(on, soft) {
     engaged = on;
     softLock = on && soft;
     controls.lookExternal = on;
     controls.grounded = on;
     viewmodel.group.visible = on;
+    document.body.classList.toggle('armed', on);
     if (!on && active) { active.releaseTrigger(); ads = false; }
     pushHud();
+  }
+  function goFullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+  }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen?.();
+    else document.documentElement.requestFullscreen?.().catch(() => {});
   }
   function engage() {
     if (engaged) return;
     audio.resume();
+    goFullscreen();
     const p = canvas.requestPointerLock?.();
     if (p && typeof p.catch === 'function') p.catch(() => setEngaged(true, true));
     setTimeout(() => { if (!engaged) setEngaged(true, true); }, 250);
@@ -151,6 +161,7 @@ export function createArsenal(forest, opts = {}) {
     if (e.button === 2) ads = false;
   }
   function onKeyDown(e) {
+    if (e.code === 'KeyF') { toggleFullscreen(); return; }
     if (e.code === 'Escape' && softLock) { setEngaged(false, false); return; }
     if (!engaged) return;
     if (e.code === 'KeyR') active?.reload();
@@ -224,6 +235,7 @@ export function createArsenal(forest, opts = {}) {
     audio.dispose();
     controls.grounded = false;
     controls.lookExternal = false;
+    document.body.classList.remove('armed');
   }
 
   return { dispose, equip };

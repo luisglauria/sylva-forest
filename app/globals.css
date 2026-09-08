@@ -32,3 +32,6 @@
 @keyframes hit{from{opacity:1;scale:.65}to{opacity:0;scale:1.2}}
 @media(pointer:coarse){.ammo,.xhair,.hitmark,.hud .engage{display:none}}
 @media(prefers-reduced-motion:reduce){.hitmark{animation:none;opacity:0}}
+/* armed: hide the cursor so mouse-look isn't fenced in by the window edges
+   (real pointer lock hides it anyway; this covers the soft-lock fallback) */
+body.armed,body.armed *{cursor:none!important}

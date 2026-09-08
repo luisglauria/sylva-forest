@@ -51,8 +51,8 @@ export default function Home() {
       {ready && hud && (
         <div className="hud" aria-live="polite">
           {hud.engaged
-            ? <p className="hint">WASD mover · Espaço pular · clique dispara · botão direito mira · R recarrega · 1/2/3 troca arma · B modo de tiro · ESC solta o mouse</p>
-            : <p className="engage">Clique para engatar a arma · <span>ESC</span> volta a explorar</p>}
+            ? <p className="hint">WASD mover · Espaço pular · clique dispara · botão direito mira · R recarrega · 1/2/3 troca arma · B modo de tiro · F tela cheia · ESC solta o mouse</p>
+            : <p className="engage">Clique para engatar a arma (tela cheia + mira travada) · <span>F</span> tela cheia · <span>ESC</span> volta a explorar</p>}
           <div className="ammo">
             <span className="wname">{hud.name} <em>{hud.kind}</em></span>
             <span className="rounds">
