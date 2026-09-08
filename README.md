@@ -99,6 +99,8 @@ npm run start      # serve o build localmente via Wrangler
 
 ## Controles
 
+**Explorando** (padrão):
+
 | Ação | Tecla / gesto |
 |---|---|
 | Olhar | arrastar o mouse |
@@ -106,6 +108,41 @@ npm run start      # serve o build localmente via Wrangler
 | Subir / descer | `Q` / `E` |
 | Acelerar | `Shift` |
 | Toque | pad no canto inferior esquerdo |
+
+**Com a arma** — clique na tela para engatar (trava o ponteiro); `ESC` volta a explorar:
+
+| Ação | Tecla / gesto |
+|---|---|
+| Mirar a câmera | mouse |
+| Andar / pular | `W` `A` `S` `D` / `Espaço` |
+| Disparar | botão esquerdo |
+| Mira de ferro (ADS) | botão direito |
+| Recarregar | `R` |
+| Trocar de arma | `1` `2` `3` |
+| Modo de tiro | `B` |
+
+Só no desktop — no celular a trava de ponteiro não existe e você fica só com a exploração.
+
+## Camada de combate (`app/weapons/`)
+
+Um FPS leve sobre a floresta, feito sem nenhum asset — geometria blockout, sons
+sintetizados no navegador (Web Audio) e toda animação por código.
+
+| Arquivo | Papel |
+|---|---|
+| `configs.ts` | O arsenal inteiro como dados: dano, pente, cadência, recarga, spread, recuo, falloff. Uma arma = uma linha. |
+| `weapon.ts` | A única classe `Weapon`. Máquina de estados (disparo/recarga), cadência, munição, modos auto/semi/burst/pump, recarga por pente ou cartucho a cartucho. Não toca em three.js — emite eventos pelos *ganchos*. |
+| `viewmodel.ts` | A arma na tela: blockout (AR / pistola / escopeta), balanço, passo, recuo por mola, ADS, mergulho de recarga, fogo do cano. |
+| `effects.ts` | Pools de traçantes, faíscas/poeira de impacto e decalques — alocados uma vez. |
+| `audio.ts` | Tiro = rajada de ruído com passa-baixa fechando + estampido + grave, com cauda por convolver. Recarga/pump/clique = ruído passa-banda curto. |
+| `index.ts` | `createArsenal(forest)`: trava de ponteiro + input, junta os ganchos de cada arma ao raycast, ao viewmodel, aos efeitos, ao som e ao recuo de câmera. |
+
+**Adicionar uma arma:** acrescente um objeto em `WEAPONS` (`configs.ts`) com um `id` novo
+e ajuste os números. Se quiser um blockout diferente, adicione um ramo em `blockout()`
+no `viewmodel.ts`. Nenhuma subclasse.
+
+Alvos ainda não existem — o raycast só acerta cenário (troncos, chão, pedras, galhos
+caídos), o que já gera impacto, decalque e marcador de acerto.
 
 ## Como a cena é montada
 
@@ -120,10 +157,13 @@ Tudo é procedural, a partir de um PRNG com seed fixa (`app/forest.ts`):
 - **Atmosfera** — domo de céu em gradiente com disco de sol, `FogExp2`, 13 feixes de luz
   (blending aditivo), poeira em suspensão, vento por vertex-shader, sombras PCFSoft 4096
   (um único update estático).
-- **Câmera** — voo livre com colisão contra o terreno.
+- **Câmera** — voo livre com colisão contra o terreno; ao engatar a arma, vira um
+  jogador preso ao chão com gravidade e pulo.
 
 ## Histórico
 
 1. Scaffold do projeto Sites (`@openai/create-sites`).
 2. Cena da floresta (autoria no Codex / GPT-5).
 3. Passo de iteração visual: copas naturais, sub-bosque iluminado, céu em gradiente.
+4. Camada de combate: sistema de armas data-driven, viewmodel e efeitos procedurais,
+   áudio sintetizado, HUD.

@@ -1,2 +1,34 @@
 @import "tailwindcss";
 :root{color-scheme:dark;--background:#172620;--foreground:#e4ecdc}*{box-sizing:border-box}html,body,main{margin:0;width:100%;height:100%;overflow:hidden;background:var(--background)}body{font-family:Arial,sans-serif}.forest,canvas{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none}canvas{outline:none;cursor:grab}canvas:active{cursor:grabbing}.loading{position:absolute;inset:0;display:grid;place-content:center;color:#becab7;font-size:13px;letter-spacing:.04em;background:#172620}.hint{position:absolute;bottom:25px;left:0;width:100%;padding:0 20px;text-align:center;color:#e9eee0;font-size:11px;letter-spacing:.04em;text-shadow:0 1px 8px #000;pointer-events:none;animation:disappear 2s 9s forwards}@keyframes disappear{to{opacity:0}}#touch-pad{display:none}@media(pointer:coarse){#touch-pad{display:block;position:absolute;bottom:34px;left:26px;width:90px;height:90px;border:1px solid #ffffff26;border-radius:50%;background:#ffffff08;touch-action:none}.hint{bottom:140px;font-size:10px}}@media(prefers-reduced-motion:reduce){.hint{animation:none}}
+
+/* --- weapon HUD (app/weapons) --- */
+.hud{position:absolute;inset:0;pointer-events:none;font-family:Arial,sans-serif}
+.hud .engage{position:absolute;bottom:24px;left:0;width:100%;text-align:center;color:#e9eee0;font-size:11px;letter-spacing:.05em;text-shadow:0 1px 8px #000}
+.hud .engage span{border:1px solid #ffffff55;border-radius:3px;padding:0 4px;font-size:10px}
+.ammo{position:absolute;right:26px;bottom:22px;display:flex;flex-direction:column;align-items:flex-end;gap:3px;color:#eef2e6;text-shadow:0 1px 6px #000}
+.ammo .wname{font-size:10px;letter-spacing:.09em;text-transform:uppercase;opacity:.8}
+.ammo .wname em{font-style:normal;opacity:.5}
+.ammo .rounds{font-size:14px;letter-spacing:.05em}
+.ammo .rounds b{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+.ammo .rounds b.low{color:#ff9c6b}
+.ammo .rounds b.dim{opacity:.35}
+.ammo .tags{display:flex;gap:6px;align-items:center;margin-top:2px}
+.mode-chip{font-size:9px;letter-spacing:.14em;text-transform:uppercase;border:1px solid #ffffff40;border-radius:3px;padding:1px 5px;opacity:.85}
+.reload-warn{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#ff9c6b;border:1px solid #ff9c6b66;border-radius:3px;padding:1px 5px}
+.xhair{position:absolute;left:50%;top:50%;width:0;height:0}
+.xhair span{position:absolute;background:#f4f6ee;box-shadow:0 0 2px #000a;opacity:.9}
+.xhair span:nth-child(1),.xhair span:nth-child(2){width:2px;height:7px;left:-1px}
+.xhair span:nth-child(1){top:calc(-1*var(--gap,8px) - 7px)}
+.xhair span:nth-child(2){top:var(--gap,8px)}
+.xhair span:nth-child(3),.xhair span:nth-child(4){height:2px;width:7px;top:-1px}
+.xhair span:nth-child(3){left:calc(-1*var(--gap,8px) - 7px)}
+.xhair span:nth-child(4){left:var(--gap,8px)}
+.hitmark{position:absolute;left:50%;top:50%;width:0;height:0;animation:hit .28s ease-out forwards}
+.hitmark span{position:absolute;width:2px;height:8px;background:#ffdca8;box-shadow:0 0 3px #000}
+.hitmark span:nth-child(1){transform:translate(-7px,-11px) rotate(45deg)}
+.hitmark span:nth-child(2){transform:translate(5px,-11px) rotate(-45deg)}
+.hitmark span:nth-child(3){transform:translate(-7px,3px) rotate(-45deg)}
+.hitmark span:nth-child(4){transform:translate(5px,3px) rotate(45deg)}
+@keyframes hit{from{opacity:1;scale:.65}to{opacity:0;scale:1.2}}
+@media(pointer:coarse){.ammo,.xhair,.hitmark,.hud .engage{display:none}}
+@media(prefers-reduced-motion:reduce){.hitmark{animation:none;opacity:0}}
