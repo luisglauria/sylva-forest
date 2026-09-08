@@ -36,7 +36,7 @@ export const WEAPONS = [
     recoil: { up: 1.25, side: 0.5, punch: 0.16, recover: 8, kickback: 0.05 },
     falloff: { start: 30, end: 70, min: 0.45 },
     audio: { pitch: 1.0, body: 0.9 },
-    view: { pos: [0.20, -0.17, -0.42], adsPos: [0.0, -0.10, -0.30], adsFov: 52 },
+    view: { pos: [0.15, -0.14, -0.40], adsPos: [0.0, -0.085, -0.28], adsFov: 52 },
   },
   {
     id: 'pistol',
@@ -55,7 +55,7 @@ export const WEAPONS = [
     recoil: { up: 2.0, side: 0.7, punch: 0.22, recover: 10, kickback: 0.06 },
     falloff: { start: 18, end: 45, min: 0.4 },
     audio: { pitch: 1.35, body: 0.6 },
-    view: { pos: [0.17, -0.16, -0.36], adsPos: [0.0, -0.09, -0.26], adsFov: 58 },
+    view: { pos: [0.13, -0.13, -0.34], adsPos: [0.0, -0.08, -0.25], adsFov: 58 },
   },
   {
     id: 'shotgun',
@@ -74,7 +74,7 @@ export const WEAPONS = [
     recoil: { up: 3.4, side: 0.6, punch: 0.42, recover: 6, kickback: 0.12 },
     falloff: { start: 8, end: 26, min: 0.15 },
     audio: { pitch: 0.82, body: 1.35 },
-    view: { pos: [0.19, -0.18, -0.44], adsPos: [0.04, -0.12, -0.34], adsFov: 62 },
+    view: { pos: [0.15, -0.15, -0.42], adsPos: [0.03, -0.11, -0.32], adsFov: 62 },
   },
 ];
 

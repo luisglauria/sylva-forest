@@ -68,10 +68,8 @@ export function createViewmodel(camera) {
   light.position.set(0.15, 0.1, 0.1);
   group.add(light);
 
-  const fx = new T.Group();
-  group.add(fx);
-
-  // muzzle flash: two crossed additive quads + a punchy short-range light
+  // muzzle flash: two crossed additive quads + a punchy short-range light,
+  // re-parented onto the gun mesh in setWeapon()
   const flashTex = flashTexture();
   const flashMat = new T.MeshBasicMaterial({ map: flashTex, transparent: true, blending: T.AdditiveBlending, depthWrite: false, fog: false, side: T.DoubleSide });
   const flashA = new T.Mesh(new T.PlaneGeometry(0.22, 0.22), flashMat);
@@ -80,9 +78,7 @@ export function createViewmodel(camera) {
   const flashGroup = new T.Group();
   flashGroup.add(flashA, flashB);
   flashGroup.visible = false;
-  fx.add(flashGroup);
   const flashLight = new T.PointLight(0xffca88, 0, 5, 2);
-  fx.add(flashLight);
 
   let blk = null;
   const hipPos = new T.Vector3(0.2, -0.17, -0.42);
@@ -92,12 +88,17 @@ export function createViewmodel(camera) {
   function setWeapon(cfg) {
     if (blk) { group.remove(blk.g); blk.g.traverse((o) => o.geometry?.dispose?.()); }
     blk = blockout(cfg.id);
+    // push the model forward so the stock never crowds the lens, and trim it a touch
+    blk.g.position.set(-0.02, 0.015, -0.28);
+    blk.g.scale.setScalar(0.72);
     group.add(blk.g);
+    // muzzle flash rides with the gun mesh so it stays at the barrel tip
+    blk.g.add(flashGroup, flashLight);
+    flashGroup.position.copy(blk.muzzle);
+    flashLight.position.copy(blk.muzzle);
     hipPos.fromArray(cfg.view.pos);
     adsPos.fromArray(cfg.view.adsPos);
     muzzleLocal.copy(blk.muzzle);
-    flashGroup.position.copy(blk.muzzle);
-    flashLight.position.copy(blk.muzzle);
   }
 
   // spring state
